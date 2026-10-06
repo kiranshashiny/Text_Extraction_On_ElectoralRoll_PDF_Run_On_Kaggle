@@ -1,0 +1,265 @@
+# 🗳️ Electoral Roll Data Extraction Pipeline
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electoral Roll Data Extraction Pipeline</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+            --code-bg: #f1f5f9;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+        }
+
+        .badge-group {
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            margin-top: 36px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .diagram-box {
+            background: var(--code-bg);
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 32px 0;
+            overflow-x: auto;
+        }
+
+        .pipeline-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .pipeline-step {
+            position: relative;
+            padding-left: 36px;
+            margin-bottom: 20px;
+        }
+
+        .pipeline-step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .pipeline-step strong {
+            color: var(--text-primary);
+            display: block;
+            font-size: 1.05rem;
+        }
+
+        .pipeline-step p {
+            margin: 4px 0 0 0;
+            color: var(--text-secondary);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .tech-card {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .tech-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1rem;
+            color: var(--accent);
+        }
+
+        .tech-card ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+    </style>
+
+    <!-- Mermaid.js Rendering -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🗳️ Electoral Roll Data Extraction Pipeline</h1>
+        <p class="subtitle">End-to-end automated pipeline for extracting structured voter records from Electoral Roll PDFs using Kaggle compute and Gemini Vision API.</p>
+
+        <div class="badge-group">
+            <span class="badge">Kaggle CLI</span>
+            <span class="badge">Gemini 3.8 Flash</span>
+            <span class="badge">pdf2image</span>
+            <span class="badge">poppler-utils</span>
+            <span class="badge">pandas</span>
+            <span class="badge">Python 3.13</span>
+        </div>
+
+        <h2>Architecture & System Flow</h2>
+        <div class="diagram-box">
+            <pre class="mermaid">
+            flowchart TD
+                A[📄 Electoral Roll PDF] -->|Input PDF| B[⚡ Kaggle Environment]
+
+                subgraph Kaggle Pipeline
+                    B --> C[✂️ Split PDF into Pages]
+                    C --> D[🖼️ High-Res PNG Images]
+                    D --> E[🔍 Gemini 3.8 Flash Vision OCR]
+                    E -->|Extract JSON Records| F[⚙️ Data Normalization & Structuring]
+                end
+
+                F --> G[📊 Structured CSV Export]
+                F --> H[🖥️ Console Table Output]
+            </pre>
+        </div>
+
+        <h2>Execution Pipeline</h2>
+        <ol class="pipeline-list">
+            <li class="pipeline-step" data-step="1">
+                <strong>PDF Ingestion & Dependency Setup</strong>
+                <p>Scans Kaggle's input workspace (<code>/kaggle/input/</code>) for target Electoral Roll PDFs and programmatically initializes system binaries like <code>poppler-utils</code>.</p>
+            </li>
+            <li class="pipeline-step" data-step="2">
+                <strong>Page Chopping & Image Generation</strong>
+                <p>Uses <code>pdf2image</code> to chop multi-page PDF documents into high-resolution PNG page images at 300 DPI for clean OCR reading.</p>
+            </li>
+            <li class="pipeline-step" data-step="3">
+                <strong>Vision-Based Structured Extraction</strong>
+                <p>Sends image pages to <code>Gemini 3.8 Flash</code> with structured JSON schemas to parse fields: Serial Number, EPIC Number, Name, Relative Name, House/Address, Age, and Gender.</p>
+            </li>
+            <li class="pipeline-step" data-step="4">
+                <strong>Data Processing & Export</strong>
+                <p>Converts raw JSON payload into structured Pandas DataFrames, prints live progress tracking logs, and outputs finalized tables or CSV files to <code>/kaggle/working/</code>.</p>
+            </li>
+        </ol>
+
+        <h2>Stack & Technologies</h2>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <h3>Cloud & Execution</h3>
+                <ul>
+                    <li><strong>Kaggle API & CLI</strong> (Remote execution)</li>
+                    <li><strong>Kaggle Kernels</strong> (Stateless execution)</li>
+                    <li><strong>Kaggle Secrets</strong> (API Key management)</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>Image & Processing</h3>
+                <ul>
+                    <li><strong>poppler-utils</strong> (C++ PDF rendering binary)</li>
+                    <li><strong>pdf2image</strong> (Python PDF-to-image wrapper)</li>
+                    <li><strong>Pillow (PIL)</strong> (Image file management)</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>AI & OCR Engine</h3>
+                <ul>
+                    <li><strong>google-genai SDK</strong></li>
+                    <li><strong>Gemini 3.8 Flash</strong> (Vision OCR)</li>
+                    <li><strong>Structured Outputs</strong> (MIME: application/json)</li>
+                </ul>
+            </div>
+            <div class="tech-card">
+                <h3>Data & Analytics</h3>
+                <ul>
+                    <li><strong>Pandas</strong> (Data structuring & export)</li>
+                    <li><strong>Python 3.13</strong> (Runtime environment)</li>
+                    <li><strong>JSON</strong> (Intermediate schema)</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            Hosted on GitHub Pages • Electoral Roll Extraction Project
+        </footer>
+    </div>
+
+</body>
+</html>
