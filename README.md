@@ -116,3 +116,6 @@ for idx, image in enumerate(images, start=1):
 print(f"\nSuccessfully chopped PDF into {len(generated_files)} PNG images!")
 
 ```
+
+
+<img width="663" height="151" alt="image" src="https://github.com/user-attachments/assets/59cf7951-884f-40f8-80c4-1d42168cb275" />
